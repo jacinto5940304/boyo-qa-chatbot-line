@@ -1,4 +1,4 @@
-
+![image](https://github.com/user-attachments/assets/3f6867d4-3ede-40d4-ae46-3053226398db)
 # Boyo Foundation Regulation QA Chatbot (LINE Bot)
 
 This project is a regulation Q&A chatbot designed for the Boyo Social Welfare Foundation. It integrates Retrieval-Augmented Generation (RAG), GPT-4o, Firebase, and the LINE Messaging API to provide instant answers to regulatory questions. It also features an interactive multiple-choice quiz system and support for persistent user conversation history.
@@ -38,7 +38,8 @@ This project is a regulation Q&A chatbot designed for the Boyo Social Welfare Fo
 ├── .gitignore
 └── README.md
 ```
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/8a5918f7-257f-4f3a-bb3b-296bb037cffc)
+
 
 
 ---
