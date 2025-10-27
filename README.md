@@ -18,6 +18,9 @@ This project is a regulation Q&A chatbot designed for the Boyo Social Welfare Fo
 - **Predefined FAQ and Tutorials**  
   Includes a Flex Message-based interface for displaying frequently asked questions and user tutorials.
 
+- **Travel Planning Guide**  
+  Provides comprehensive 7-day Shanghai + Nanjing family trip planning, including attractions, food, shopping, bars, and transportation information. Automatically responds to travel-related queries.
+
 - **Modular RAG Backend**  
   Supports ChromaDB-based document retrieval with HuggingFace embeddings, downloaded and indexed from Drive-hosted .txt regulation files.
 
@@ -27,13 +30,15 @@ This project is a regulation Q&A chatbot designed for the Boyo Social Welfare Fo
 
 ```bash
 .
-├── main.py                     # Main entry point (Flask + LINE Webhook)
-├── generate.py                 # GPT-powered quiz question generator
-├── rag_module.py               # RAG pipeline (LangChain + Chroma + HuggingFace + OpenAI)
-├── firebase_service_key.json   # Firebase service credentials (excluded from version control)
-├── Donation-charter.txt        # Regulation: Donation-related guidelines
-├── Integrity-norm.txt          # Regulation: Integrity norms
-├── requirements.txt            # Project dependencies
+├── main.py                              # Main entry point (Flask + LINE Webhook)
+├── generate.py                          # GPT-powered quiz question generator
+├── rag_module.py                        # RAG pipeline (LangChain + Chroma + HuggingFace + OpenAI)
+├── firebase_service_key.json            # Firebase service credentials (excluded from version control)
+├── Donation-charter.txt                 # Regulation: Donation-related guidelines
+├── Integrity-norm.txt                   # Regulation: Integrity norms
+├── Shanghai-Nanjing-Travel-Guide.txt    # Travel guide content for chatbot responses
+├── Shanghai-Nanjing-7Day-Presentation.md # Presentation-style travel guide
+├── requirements.txt                     # Project dependencies
 ├── .gitignore
 └── README.md
 ```
@@ -104,6 +109,35 @@ python main.py
 - Uses GPT-4o-mini to generate a new regulation-based multiple-choice question
 - Avoids duplication by referencing Firebase quiz history
 - Returns `question`, `options`, and `answer`, and pushes them to LINE using Quick Reply buttons
+
+---
+
+## Travel Planning Guide
+
+The chatbot now includes a comprehensive 7-day Shanghai + Nanjing family trip planning feature:
+
+### Features
+- **Automatic Detection**: Responds when users ask about Shanghai, Nanjing, or travel-related queries
+- **AI-Powered Responses**: Uses GPT-4o-mini to extract relevant information from the travel guide based on user questions
+- **Comprehensive Content**: Includes attractions, food recommendations, shopping areas, bars, and transportation details
+- **Two Formats Available**:
+  - `Shanghai-Nanjing-Travel-Guide.txt`: Detailed text-based guide for chatbot responses
+  - `Shanghai-Nanjing-7Day-Presentation.md`: Presentation-style markdown format
+
+### Coverage
+- **Day 1-3**: Shanghai (The Bund, Oriental Pearl Tower, Xintiandi, Museums)
+- **Day 4**: Transit to Nanjing + Qinhuai River night tour
+- **Day 5-6**: Nanjing (Sun Yat-sen Mausoleum, Ming Xiaoling, Presidential Palace, Museums)
+- **Day 7**: Return journey
+- **Additional Info**: Transportation methods, budget planning, accommodation recommendations, shopping guides
+
+### Usage Example
+Users can ask questions like:
+- "上海南京七日遊" (Shanghai-Nanjing 7-day trip)
+- "上海有什麼景點" (What attractions are in Shanghai)
+- "南京美食推薦" (Nanjing food recommendations)
+
+The chatbot will intelligently extract relevant information from the travel guide and provide customized responses.
 
 ---
 

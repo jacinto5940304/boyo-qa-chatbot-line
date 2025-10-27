@@ -236,6 +236,90 @@ def process_gpt_and_push(event):
             print(f"[DEBUG] LINE 推送使用教學完成，用時：{time.time() - total_start:.2f} 秒")
             return
 
+        # 上海南京旅遊指南
+        if any(keyword in user_input for keyword in ["上海", "南京", "旅遊", "旅行", "七日", "家庭遊"]):
+            try:
+                with open("Shanghai-Nanjing-Travel-Guide.txt", encoding="utf-8") as f:
+                    travel_guide = f.read()
+                
+                # 使用 GPT 根據用戶問題提取相關資訊
+                prompt = (
+                    f"以下是上海南京七日遊的完整旅遊指南：\n\n{travel_guide}\n\n"
+                    f"用戶問題：{user_input}\n\n"
+                    "請根據用戶的問題，從旅遊指南中提取最相關的資訊進行回答。"
+                    "如果用戶想要完整的簡報或行程規劃，請提供精簡但完整的七日行程概覽。"
+                    "回答要清晰、有條理，使用繁體中文。"
+                )
+                
+                response = requests.post(
+                    "https://api.openai.com/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {OPENAI_API_KEY}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "model": "gpt-4o-mini",
+                        "messages": [
+                            {"role": "system", "content": "你是專業的旅遊規劃顧問，專門協助規劃上海南京家庭旅遊行程。"},
+                            {"role": "user", "content": prompt}
+                        ]
+                    },
+                    timeout=30
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    answer = data["choices"][0]["message"]["content"].strip()
+                    answer += "\n\n📄 完整旅遊指南已準備好，包含景點、美食、購物、交通等詳細資訊！"
+                else:
+                    answer = "⚠️ 很抱歉，暫時無法提供旅遊資訊，請稍後再試。"
+                
+                # 回覆旅遊資訊
+                flex_json = {
+                    "type": "bubble",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "🌏 上海南京七日遊指南",
+                                "weight": "bold",
+                                "size": "lg",
+                                "color": "#FF6B6B"
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "md"
+                            },
+                            {
+                                "type": "text",
+                                "text": answer,
+                                "wrap": True,
+                                "margin": "md",
+                                "size": "sm"
+                            }
+                        ]
+                    }
+                }
+                
+                flex_message = FlexMessage(
+                    alt_text="🌏 上海南京七日遊指南",
+                    contents=FlexContainer.from_dict(flex_json)
+                )
+                
+                line_bot_api.reply_message_with_http_info(
+                    ReplyMessageRequest(
+                        reply_token=event.reply_token,
+                        messages=[flex_message]
+                    )
+                )
+                print(f"[DEBUG] LINE 推送旅遊指南完成，用時：{time.time() - total_start:.2f} 秒")
+                return
+                
+            except Exception as e:
+                import logging
+                logging.exception(f"[Travel Guide Error] {str(e)}")
 
         # if user_input == "測驗":
 
